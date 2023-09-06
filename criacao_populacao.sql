@@ -1,0 +1,505 @@
+-- Criação das Tabelas
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+    CPF VARCHAR(11),
+    End_Rua VARCHAR(255),
+    End_Num VARCHAR(12),
+    End_Cep VARCHAR(12),
+    Telefone_1 VARCHAR(15),
+    Telefone_2 VARCHAR(15),
+    CONSTRAINT PK_CLIENTE PRIMARY KEY(CPF)
+);
+
+-- Tabela Patrocinador
+CREATE TABLE Patrocinador (
+    CNPJ VARCHAR(14),
+    Nome VARCHAR(255),
+    CONSTRAINT PK_PATROCINA PRIMARY KEY(CNPJ)
+);
+
+-- Tabela Festival
+CREATE TABLE Festival (
+    ID VARCHAR(3),
+    Nome VARCHAR(255),
+    CONSTRAINT PK_FESTIVAL PRIMARY KEY(ID)
+);
+
+-- Tabela Prêmio
+CREATE TABLE Premio (
+    COD VARCHAR(12),
+    Nome VARCHAR(255),
+    CONSTRAINT PK_PREMIO PRIMARY KEY(COD)
+);
+
+-- Tabela Músico
+CREATE TABLE Musico (
+    CPF VARCHAR(11),
+    Nome VARCHAR(255),
+    CONSTRAINT PK_MUSICO PRIMARY KEY(CPF)
+);
+
+-- Tabela Instrumento
+CREATE TABLE Instrumento (
+    Cadastro VARCHAR(12),
+    Categoria VARCHAR(255),
+    CONSTRAINT PK_INSTRUMENTO PRIMARY KEY(Cadastro)
+);
+
+-- Tabela Funcionário
+CREATE TABLE Funcionario (
+    Matricula VARCHAR(12),
+    Nome VARCHAR(255),
+    Mat_chefe VARCHAR(12),
+    CONSTRAINT PK_MATRICULA PRIMARY KEY(Matricula),
+    CONSTRAINT FK_MAT_CHEFE FOREIGN KEY (Mat_chefe) REFERENCES Funcionario(Matricula)
+);
+
+-- Tabela Artista
+CREATE TABLE Artista (
+    CPF VARCHAR(11),
+    Nome VARCHAR(255),
+    CONSTRAINT PK_ARTISTA PRIMARY KEY(CPF)
+);
+
+-- Tabela Ingresso
+CREATE TABLE Ingresso (
+    NUM VARCHAR(12),
+    CPF_C VARCHAR(11),
+    ID_F VARCHAR(12),
+    CONSTRAINT PK_INGRESSO PRIMARY KEY(NUM)
+    CONSTRAINT FK_CPF_CLIENTE FOREIGN KEY (CPF_C) REFERENCES Cliente(CPF),
+    CONSTRAINT FK_ID_FESTIVAL (ID_F) REFERENCES Festival(ID)
+);
+
+-- Tabela Equipe (Entidade Fraca)
+CREATE TABLE Equipe (
+    Num VARCHAR(12), --Discriminador / não é por que 1:1
+    CPF_A VARCHAR(11), -- CPF ARTISTA
+    CONSTRAINT PK_EQUIPE PRIMARY KEY(CPF_A),
+    CONSTRAINT FK_CPF_A FOREIGN KEY (CPF_A) REFERENCES Artista(CPF)
+);
+
+-- Tabela Show (Herança)
+CREATE TABLE Show (
+    COD VARCHAR(12),
+    Nome VARCHAR(255),
+    ID_F VARCHAR(12),
+    CONSTRAINT PK_COD PRIMARY KEY (COD),
+    CONSTRAINT FK_ID_F FOREIGN KEY (ID_F) REFERENCES Festival(ID)
+);
+
+-- Tabela Gincana (Herança)
+CREATE TABLE Gincana (
+    COD VARCHAR(12) PRIMARY KEY,
+    ID_F VARCHAR(12),
+    CONSTRAINT PK_COD PRIMARY KEY (COD),
+    CONSTRAINT FK_ID_F FOREIGN KEY (ID_F) REFERENCES Festival(ID)
+);
+
+-- Tabela Participa (Entidade Associativa)
+CREATE TABLE Participa (
+    CPF VARCHAR(11),
+    COD VARCHAR(12),
+    CONSTRAINT PK_PARTICIPA PRIMARY KEY (CPF, COD),
+    CONSTRAINT FK_CPF FOREIGN KEY (CPF) REFERENCES Cliente(CPF),
+    CONSTRAINT FK_COD FOREIGN KEY (COD) REFERENCES Gincana(COD)
+);
+
+-- Tabela Patrocina
+CREATE TABLE Patrocina (
+    ID_F VARCHAR(12),
+    CNPJ VARCHAR(14),
+    CONSTRAINT PK_PATROCINA PRIMARY KEY (ID_F, CNPJ),
+    CONSTRAINT FK_ID_F FOREIGN KEY (ID_F) REFERENCES Festival(ID),
+    CONSTRAINT FK_CNPJ FOREIGN KEY (CNPJ) REFERENCES Patrocinador(CNPJ)
+);
+
+-- Tabela Trabalha
+CREATE TABLE Trabalha (
+    ID_F VARCHAR(12),
+    Data_ TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Matricula_Fc VARCHAR(12),
+    CONSTRAINT PK_TRABALHA PRIMARY KEY (ID_F, Matricula_Fc, Data_),
+    CONSTRAINT FK_FUNCIONARIO FOREIGN KEY (Matricula_Fc) REFERENCES Funcionario(Matricula),
+    CONSTRAINT FK_FESTIVAL FOREIGN KEY (ID_F) REFERENCES Festival(ID)
+);
+
+-- Tabela Faz
+CREATE TABLE Faz (
+    COD_S VARCHAR(12),
+    CPF_A VARCHAR(11),
+    CONSTRAINT PK_FAZ PRIMARY KEY (COD_S, CPF_A),
+    CONSTRAINT FK_SHOW FOREIGN KEY (COD_S) REFERENCES Show(COD),
+    CONSTRAINT FK_ARTISTA FOREIGN KEY (CPF_A) REFERENCES Artista(CPF)
+);
+
+-- Tabela Ganha (Corrigida)
+CREATE TABLE Ganha (
+    CPF VARCHAR(11),
+    COD_P VARCHAR(12),
+    CONSTRAINT PK_GANHA PRIMARY KEY (CPF, COD_P),
+    CONSTRAINT FK_PARTICIPA FOREIGN KEY (CPF, COD) REFERENCES Participa(CPF, COD),
+    CONSTRAINT FK_PREMIO FOREIGN KEY (COD_P) REFERENCES Premio(COD)
+);
+
+-- Tabela Toca
+CREATE TABLE Toca (
+    COD_S VARCHAR(12),
+    CPF_M VARCHAR(11),
+    Cadastro_inst VARCHAR(12),
+    CONSTRAINT PK_TOCA PRIMARY KEY (COD_S, CPF_M, Cadastro_inst),
+    CONSTRAINT FK_SHOW FOREIGN KEY (COD_S) REFERENCES Show(COD),
+    CONSTRAINT FK_MUSICO FOREIGN KEY (CPF_M) REFERENCES Musico(CPF),
+    CONSTRAINT FK_INSTRUMENTO FOREIGN KEY (Cadastro_inst) REFERENCES Instrumento(Cadastro)
+);
+
+-- Fim do Script SQL
+
+-- Inserção de dados nas Tabelas
+
+-- Tabela Cliente
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('47482733469','YMZj cn','827-18','933312','(81)96271-7543','(08332) 6983060');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('74828552113','XJEd ym','761-36','52743-354','(81)93044-5515','(02512) 8794741');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('45581254246','CCFg xl','583-45','75-099','(81)93221-4184','(0131) 71672379');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('82621093867','YKVk fo','567-62','194772','(81)95837-7846','(05537) 1801738');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('47414039412','SYWf bu','513-86','65365','(81)94042-8715','(0624) 22547112');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('15881813547','OSCn sw','831-33','183856','(81)95120-9193','(0957) 42811944');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('43133358146','VWOa da','505-63','SW6 5YJ','(81)90361-2731','(060) 36106704');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('62889654401','BYCe hf','275-23','15798-74282','(81)94701-2889','(025) 73382322');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('24598659684','NAFg mq','360-43','75736','(81)92644-4736','(032581) 186692');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('24288337731','BBBh tw','766-64','B1C 1TM','(81)93358-4359','(036243) 364650');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('74495868731','PMOo wr','343-76','458220','(81)96155-6681','(06938) 2890275');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('88213865884','SKBi eq','844-83','22876','(81)94777-1358','(038762) 217278');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('71100959274','BNXr ey','856-45','4671','(81)98607-2793','(0231) 22208404');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('45548188804','YTBa th','894-11','53743-462','(81)99642-4768','(0515) 44277923');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('97754114120','LMTc qm','830-92','6277 LG','(81)94831-9475','(062) 78152375');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('85321548494','TDFd ip','828-36','28545','(81)91164-5446','(077) 97949836');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('74482559784','ECQh vu','634-44','A5T 7K5','(81)94382-5139','(05105) 8140933');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('41611834740','HHKd qh','656-42','71205','(81)95251-5506','(0540) 78169532');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('72518164573','GUPd ui','422-13','345648','(81)95538-1624','(0269) 71397242');
+INSERT INTO Cliente (CPF,End_Rua,End_Num,End_Cep,Telefone_1,Telefone_2)
+VALUES ('78233046209','DFVm sq','279-46','55524','(81)97949-6173','(038350) 523648');
+
+-- Tabela Patrocinador
+INSERT INTO Patrocinador (CNPJ, Nome)
+VALUES ('12345678901234', 'Empresa Geekie');
+
+INSERT INTO Patrocinador (CNPJ, Nome)
+VALUES ('23456789012345', 'Number One Produtora');
+
+INSERT INTO Patrocinador (CNPJ, Nome)
+VALUES ('34567890123456', 'Magalu');
+
+INSERT INTO Patrocinador (CNPJ, Nome)
+VALUES ('45678901234567', 'XP Inc');
+
+INSERT INTO Patrocinador (CNPJ, Nome)
+VALUES ('56789012345678', 'V-LAB');
+
+-- Tabela Festival
+INSERT INTO Festival (ID, Nome)
+VALUES ('1', 'Festival de Verão');
+
+INSERT INTO Festival (ID, Nome)
+VALUES ('2', 'Festival de Inverno');
+
+INSERT INTO Festival (ID, Nome)
+VALUES ('3', 'Festival de Outono');
+
+INSERT INTO Festival (ID, Nome)
+VALUES ('4', 'Festival de Primavera');
+
+INSERT INTO Festival (ID, Nome)
+VALUES ('5', 'Festival de Natal');
+
+-- Tabela Prêmio
+INSERT INTO Premio (COD, Nome)
+VALUES ('101', 'Melhor Artista');
+
+INSERT INTO Premio (COD, Nome)
+VALUES ('102', 'Melhor Show');
+
+INSERT INTO Premio (COD, Nome)
+VALUES ('103', 'Melhor Músico');
+
+INSERT INTO Premio (COD, Nome)
+VALUES ('104', 'Melhor Patrocinador');
+
+INSERT INTO Premio (COD, Nome)
+VALUES ('105', 'Melhor Equipe');
+
+-- Tabela Músico
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("29664652572","McKenzie Lyons");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("38304245757","Tanek Cox");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("35447532261","Regan Wolf");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("57514788700","Dennis Pickett");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("73417898964","Alden Dyer");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("79832999453","Cooper Vaughan");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("14648466289","Cruz Soto");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("18225163794","Talon Coleman");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("15186462352","Charity Crawford");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("59782351851","Hammett Simon");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("58526834512","Odette Tucker");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("58886627595","Tatum Allison");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("83774825661","Adrienne Fields");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("67232476415","Colorado Price");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("62607157967","Fuller Gill");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("28963822654","Kaye Nielsen");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("33876246864","Patience Flores");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("53598718778","Finn Gould");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("25935656284","Ruth Bernard");
+INSERT INTO MUSICO (CPF,NOME)
+VALUES ("21210234386","Chester Kinney");
+
+
+-- Tabela Instrumento
+INSERT INTO Instrumento (Cadastro, Categoria)
+VALUES '1234567' 'Corda';
+
+INSERT INTO Instrumento (Cadastro)
+VALUES '1234567' 'Percusao';
+
+INSERT INTO Instrumento (Cadastro)
+VALUES '1234567' 'Percusao';
+
+INSERT INTO Instrumento (Cadastro)
+VALUES '1234567' 'Sopro';
+
+INSERT INTO Instrumento (Cadastro)
+VALUES '1234567' 'Corda';
+ 
+-- FEITO ATÉ AQUI
+
+
+-- Tabela Funcionário
+INSERT INTO Funcionario (Matricula, Nome, Mat_chefe)
+VALUES (1001, 'Funcionário 1', NULL);
+
+INSERT INTO Funcionario (Matricula, Nome, Mat_chefe)
+VALUES (1002, 'Funcionário 2', 1001);
+
+INSERT INTO Funcionario (Matricula, Nome, Mat_chefe)
+VALUES (1003, 'Funcionário 3', 1001);
+
+INSERT INTO Funcionario (Matricula, Nome, Mat_chefe)
+VALUES (1004, 'Funcionário 4', NULL);
+
+INSERT INTO Funcionario (Matricula, Nome, Mat_chefe)
+VALUES (1005, 'Funcionário 5', 1004);
+
+-- Tabela Artista
+INSERT INTO Artista (CPF)
+VALUES ('11111111111');
+
+INSERT INTO Artista (CPF)
+VALUES ('22222222222');
+
+INSERT INTO Artista (CPF)
+VALUES ('33333333333');
+
+INSERT INTO Artista (CPF)
+VALUES ('44444444444');
+
+INSERT INTO Artista (CPF)
+VALUES ('55555555555');
+
+-- Tabela Ingresso
+INSERT INTO Ingresso (NUM, CPF_C, ID_F)
+VALUES (1, '11111111111', 1);
+
+INSERT INTO Ingresso (NUM, CPF_C, ID_F)
+VALUES (2, '22222222222', 1);
+
+INSERT INTO Ingresso (NUM, CPF_C, ID_F)
+VALUES (3, '33333333333', 2);
+
+INSERT INTO Ingresso (NUM, CPF_C, ID_F)
+VALUES (4, '44444444444', 3);
+
+INSERT INTO Ingresso (NUM, CPF_C, ID_F)
+VALUES (5, '55555555555', 4);
+
+-- Tabela Equipe (Entidade Fraca)
+INSERT INTO Equipe (CPF_A, Num)
+VALUES ('11111111111', 1);
+
+INSERT INTO Equipe (CPF_A, Num)
+VALUES ('11111111111', 2);
+
+INSERT INTO Equipe (CPF_A, Num)
+VALUES ('22222222222', 1);
+
+INSERT INTO Equipe (CPF_A, Num)
+VALUES ('33333333333', 2);
+
+INSERT INTO Equipe (CPF_A, Num)
+VALUES ('44444444444', 1);
+
+-- Tabela Show (Herança)
+INSERT INTO Show (COD, Nome, ID_F)
+VALUES (201, 'Show 1', 1);
+
+INSERT INTO Show (COD, Nome, ID_F)
+VALUES (202, 'Show 2', 2);
+
+INSERT INTO Show (COD, Nome, ID_F)
+VALUES (203, 'Show 3', 3);
+
+INSERT INTO Show (COD, Nome, ID_F)
+VALUES (204, 'Show 4', 4);
+
+INSERT INTO Show (COD, Nome, ID_F)
+VALUES (205, 'Show 5', 5);
+
+-- Tabela Gincana (Herança)
+INSERT INTO Gincana (COD, ID_F)
+VALUES (301, 1);
+
+INSERT INTO Gincana (COD, ID_F)
+VALUES (302, 2);
+
+INSERT INTO Gincana (COD, ID_F)
+VALUES (303, 3);
+
+INSERT INTO Gincana (COD, ID_F)
+VALUES (304, 4);
+
+INSERT INTO Gincana (COD, ID_F)
+VALUES (305, 5);
+
+-- Tabela Participa (Entidade Associativa)
+INSERT INTO Participa (CPF, COD)
+VALUES ('11111111111', 301);
+
+INSERT INTO Participa (CPF, COD)
+VALUES ('22222222222', 301);
+
+INSERT INTO Participa (CPF, COD)
+VALUES ('33333333333', 302);
+
+INSERT INTO Participa (CPF, COD)
+VALUES ('44444444444', 302);
+
+INSERT INTO Participa (CPF, COD)
+VALUES ('55555555555', 303);
+
+-- Tabela Patrocina
+INSERT INTO Patrocina (ID_F, CNPJ)
+VALUES (1, '12345678901234');
+
+INSERT INTO Patrocina (ID_F, CNPJ)
+VALUES (2, '23456789012345');
+
+INSERT INTO Patrocina (ID_F, CNPJ)
+VALUES (3, '34567890123456');
+
+INSERT INTO Patrocina (ID_F, CNPJ)
+VALUES (4, '45678901234567');
+
+INSERT INTO Patrocina (ID_F, CNPJ)
+VALUES (5, '56789012345678');
+
+-- Tabela Trabalha
+INSERT INTO Trabalha (Data, Matricula_Fc, ID_F)
+VALUES (TO_DATE('2023-01-01', 'YYYY-MM-DD'), 1001, 1);
+
+INSERT INTO Trabalha (Data, Matricula_Fc, ID_F)
+VALUES (TO_DATE('2023-02-01', 'YYYY-MM-DD'), 1002, 2);
+
+INSERT INTO Trabalha (Data, Matricula_Fc, ID_F)
+VALUES (TO_DATE('2023-03-01', 'YYYY-MM-DD'), 1003, 3);
+
+INSERT INTO Trabalha (Data, Matricula_Fc, ID_F)
+VALUES (TO_DATE('2023-04-01', 'YYYY-MM-DD'), 1004, 4);
+
+INSERT INTO Trabalha (Data, Matricula_Fc, ID_F)
+VALUES (TO_DATE('2023-05-01', 'YYYY-MM-DD'), 1005, 5);
+
+-- Tabela Faz
+INSERT INTO Faz (COD_S, CPF_A)
+VALUES (201, '11111111111');
+
+INSERT INTO Faz (COD_S, CPF_A)
+VALUES (202, '22222222222');
+
+INSERT INTO Faz (COD_S, CPF_A)
+VALUES (203, '33333333333');
+
+INSERT INTO Faz (COD_S, CPF_A)
+VALUES (204, '44444444444');
+
+INSERT INTO Faz (COD_S, CPF_A)
+VALUES (205, '55555555555');
+
+-- Tabela Ganha
+INSERT INTO Ganha (PK_participa, COD_P)
+VALUES (1, 101);
+
+INSERT INTO Ganha (PK_participa, COD_P)
+VALUES (2, 102);
+
+INSERT INTO Ganha (PK_participa, COD_P)
+VALUES (3, 103);
+
+INSERT INTO Ganha (PK_participa, COD_P)
+VALUES (4, 104);
+
+INSERT INTO Ganha (PK_participa, COD_P)
+VALUES (5, 105);
+
+-- Tabela Toca
+INSERT INTO Toca (COD_S, CPF_M, Cadastro)
+VALUES (201, '66666666666', 1);
+
+INSERT INTO Toca (COD_S, CPF_M, Cadastro)
+VALUES (202, '77777777777', 2);
+
+INSERT INTO Toca (COD_S, CPF_M, Cadastro)
+VALUES (203, '88888888888', 3);
+
+INSERT INTO Toca (COD_S, CPF_M, Cadastro)
+VALUES (204, '99999999999', 4);
+
+INSERT INTO Toca (COD_S, CPF_M, Cadastro)
+VALUES (205, '10101010101', 5);
+
+-- Fim da inserção de dados

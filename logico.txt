@@ -1,0 +1,52 @@
+Entidades Regulares: 
+Cliente(CPF, End_Rua, End_Num, End_Cep, Telefone_1, Telefone_2)
+Patrocinador(CNPJ, Nome)
+Festival(ID, Nome)
+Prêmio (COD, Nome) 
+Músico(CPF, Nome)
+Instrumento(Cadastro, categoria)
+Funcionário(Matrícula, Nome, Mat_chefe)
+Mat_chefe -> Funcionário (Matrícula)
+Artista(CPF, nome)
+Ingresso(NUM,CPF_C,ID_F)
+CPF_C -> Cliente(CPF)
+ID_F -> Festival(ID)
+
+Entidade Fraca:
+Equipe(CPF_A,Num)
+CPF_A -> Artista(CPF)
+
+Heranças:
+Show(COD, nome, ID_F)
+ID_F -> Festival(ID)
+Gincana(COD, ID_F)
+ID_F -> Festival(ID)
+
+Entidade Associativa:
+Participa(CPF,COD )
+CPF -> Cliente(CPF)
+COD -> Gincana(COD)
+
+Relações e Atributos:
+Patrocina(ID_F,CNPJ)
+ID_F -> Festival(ID)
+CNPJ -> Patrocinador(CNPJ)
+
+Trabalha(Data, Matricula_Fc, ID_F)
+Matricula_Fc -> Funcionário(Matrícula)
+ID_F -> Festival(ID)
+
+Faz (COD_S, CPF_A) 
+COD_S -> Show(COD)
+CPF_A - > Artista(CPF)
+
+Ganha(PK_participa, COD_P)
+PK_participa -> Participa(CPF,COD)
+COD_P -> Prêmio(COD)
+
+
+
+Toca(COD_S,CPF_M,Cadastro)
+COD_S -> Show(COD)
+CPF_M -> Músico(CPF)
+Cadastro -> Instrumento(Cadastro)
