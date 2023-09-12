@@ -18,22 +18,22 @@
 /* Junção Externa: 
     Projetar os funcionários não trabalham atualmente em nenhum festival */
 
-		SELECT F.NOME
-		FROM FUNCIONARIO F LEFT OUTER JOIN
-			TRABALHA T ON F.MATRICULA = T.MATRICULA_FUNC
-		WHERE T.DATA_ = CURRENT_DATE AND
-			T.ID_FESTIVAL IS NULL
+		  SELECT F.NOME
+		  FROM FUNCIONARIO F LEFT OUTER JOIN
+			    TRABALHA T ON F.MATRICULA = T.MATRICULA_FUNC
+		  WHERE T.DATA_ = CURRENT_DATE AND
+			    T.ID_FESTIVAL IS NULL
 
 /* Semi junção:
     Projetar os telefone de todos os clientes que compraram ingresso em algum festival */
 		
         SELECT CLI.TELEFONE_1, CLI.TELEFONE_2
-		FROM CLIENTE CLI
-		WHERE EXISTS (
-    		SELECT C.CPF
-			FROM COMPRA C
-			WHERE CLI.CPF = C.CPF
-        )
+		    FROM CLIENTE CLI
+		    WHERE EXISTS (
+    		    SELECT C.CPF
+			      FROM COMPRA C
+			      WHERE CLI.CPF = C.CPF
+            )
 
 /* Anti-junção:
     Projetar o CPF dos clientes que possuem ingresso e não participaram da gincana
@@ -41,8 +41,8 @@
         SELECT C.CPF
         FROM COMPRA C
         WHERE NOT EXISTS (
-        	SELECT P.NUM_INGRESSO
-        	FROM PARTICIPA P
+            SELECT P.NUM_INGRESSO
+        	  FROM PARTICIPA P
             WHERE P.NUM_INGRESSO = C.NUM
             )
 
@@ -55,7 +55,7 @@
             SELECT F1.MAT_CHEFE
             FROM FUNCIONARIO F1
             WHERE F1.MATRICULA = 'X'
-			)
+			      )
 
 /* Subconsulta do tipo linha:
     Projetar os shows som o mesmo horário e local do show de código X */
