@@ -25,7 +25,7 @@
             T.ID_FESTIVAL IS NULL
 
 /* Semi junção:
-	Projetar os telefone de todos os clientes que compraram ingresso em algum festival */
+    Projetar os telefone de todos os clientes que compraram ingresso em algum festival */
 		
         SELECT CLI.TELEFONE_1, CLI.TELEFONE_2
 		FROM CLIENTE CLI
