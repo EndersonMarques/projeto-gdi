@@ -4,7 +4,7 @@
         SELECT I.CATEGORIA, COUNT(*) AS NUM_INSTRUMENTOS
         FROM INSTRUMENTO I
         GROUP BY I.CATEGORIA
-        HAVING COUNT(*) > 3
+        HAVING COUNT(*) > 3aaaaa
 
 
 /* Junção interna:
