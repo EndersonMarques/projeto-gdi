@@ -8,7 +8,7 @@
 
 
 /* Junção interna:
-    Projetar o nome de todos os shows e o nome de seu respectivo festival */
+	Projetar o nome de todos os shows e o nome de seu respectivo festival */
 
         SELECT S.NOME, F.NOME
         FROM SHOW S INNER JOIN
