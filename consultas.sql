@@ -45,14 +45,14 @@
 			);
 
 /* Subconsulta do tipo escalar:
-	Projetar o nome do chefe do funcionário de matrícula X */
+	Projetar o nome do chefe do funcionário de matrícula M007 */
 
 		SELECT F.NOME
 		FROM FUNCIONARIO F
-		WHERE F.MAT_CHEFE = (
+		WHERE F.MATRICULA = (
 			SELECT F1.MAT_CHEFE
 			FROM FUNCIONARIO F1
-			WHERE F1.MATRICULA = 'X'
+			WHERE F1.MATRICULA = 'M007'
 			);
 
 /* Subconsulta do tipo linha:
@@ -81,8 +81,8 @@
 /* Operação de Conjunto:
 	Projetar o nome de todos os cantores que também são músicos */
 
-			SELECT C.NOM
+			SELECT C.NOME
 			FROM CANTOR C
-		UNION
+		iNTERSECT
 			SELECT M.NOME
 			FROM MUSICO M;
