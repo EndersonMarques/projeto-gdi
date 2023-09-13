@@ -4,14 +4,14 @@
 		SELECT I.CATEGORIA, COUNT(*) AS NUM_INSTRUMENTOS
 		FROM INSTRUMENTO I
 		GROUP BY I.CATEGORIA
-		HAVING COUNT(*) > 3
+		HAVING COUNT(*) > 3;
 
 /* Junção interna:
 	Projetar o nome de todos os shows e o nome de seu respectivo festival */
 
 		SELECT S.NOME, F.NOME
 		FROM SHOW S INNER JOIN
-			FESTIVAL F ON S.ID_FESTIVAL = F.ID
+			FESTIVAL F ON S.ID_FESTIVAL = F.ID;
 
 /* Junção Extetna:
 	Projetar os funcionários que não trabalham atualmente em nenhum festival */
@@ -20,7 +20,7 @@
 		FROM FUNCIONARIO F LEFT OUTER JOIN
 			TRABALHA T ON F.MATRICULA = T.MATRICULA_FUNC
 		WHERE T.DATA_ = CURRENT_DATE AND
-			T.ID_FESTIVAL IS NULL
+			T.ID_FESTIVAL IS NULL;
 
 /* Semi junção:
 	Projetar os telefones de todos os clientes que compraram ingresso para algum festival */
@@ -31,7 +31,7 @@
 			SELECT C.CPF
 			FROM COMPRA C
 			WHERE CLI.CPF = C.CPF
-			)
+			);
 
 /* Anti-junção:
 	Projetar o CPF dos clientes que possuem ingresso e não participaram da gincana */
@@ -42,7 +42,7 @@
 			SELECT P.NUM_INGRESSO
 			FROM PARTICIPA P
 			WHERE P.NUM_INGRESSO = C.NUM
-			)
+			);
 
 /* Subconsulta do tipo escalar:
 	Projetar o nome do chefe do funcionário de matrícula X */
@@ -53,7 +53,7 @@
 			SELECT F1.MAT_CHEFE
 			FROM FUNCIONARIO F1
 			WHERE F1.MATRICULA = 'X'
-			)
+			);
 
 /* Subconsulta do tipo linha:
 	Projetar os shows com o mesmo horário e local do show de código X */
@@ -64,7 +64,7 @@
 			SELECT S1.DATA_HORA, S1.LOCAL_
 			FROM SHOW S1
 			WHERE S1.COD = 'X'
-			)
+			);
 
 /* Subconsulta do tipo tabela:
 	Projetar o nome de todos os funcionários que trabalham atualmente em algum festival */
@@ -76,7 +76,7 @@
 			FROM TRABALHA T
 			WHERE T.DATA_ = CURRENT_DATE AND
 				T.ID_FESTIVAL IS NOT NULL
-			)
+			);
 
 /* Operação de Conjunto:
 	Projetar o nome de todos os cantores que também são músicos */
@@ -85,4 +85,4 @@
 			FROM CANTOR C
 		UNION
 			SELECT M.NOME
-			FROM MUSICO M
+			FROM MUSICO M;
