@@ -67,15 +67,17 @@
 			);
 
 /* Subconsulta do tipo tabela:
-	Projetar o nome de todos os funcionários que trabalham atualmente em algum festival */
+	Projetar o nome e a categoria de todos os instrumentos que todos os músicos tocam */
 
-		SELECT F.NOME
-		FROM FUNCIONARIO F
-		WHERE F.MATRICULA IN (
-			SELECT T.MATRICULA_FUNC
-			FROM TRABALHA T
-			WHERE T.DATA_ = CURRENT_DATE AND
-				T.ID_FESTIVAL IS NOT NULL
+		SELECT I.NOME, I.CATEGORIA
+		FROM INSTRUMENTO I
+		WHERE I.CADASTRO IN (
+    			SELECT T.CAD_INST
+    			FROM TOCA T
+    			WHERE T.CPF_MUSICO IN (
+    				SELECT M.CPF
+    				FROM MUSICO M
+    				)
 			);
 
 /* Operação de Conjunto:
