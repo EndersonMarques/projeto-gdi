@@ -14,13 +14,12 @@
 			FESTIVAL F ON S.ID_FESTIVAL = F.ID;
 
 /* Junção Extetna:
-	Projetar os funcionários que não trabalham atualmente em nenhum festival */
+	Projetar o nome dos clientes que não compraram ingresso */
 
-		SELECT F.NOME
-		FROM FUNCIONARIO F LEFT OUTER JOIN
-			TRABALHA T ON F.MATRICULA = T.MATRICULA_FUNC
-		WHERE T.DATA_ = CURRENT_DATE AND
-			T.ID_FESTIVAL IS NULL;
+		SELECT CLI.NOME
+		FROM CLIENTE CLI LEFT OUTER JOIN
+			COMPRA C ON CLI.CPF = C.CPF
+		WHERE C.CPF IS NULL;
 
 /* Semi junção:
 	Projetar os telefones de todos os clientes que compraram ingresso para algum festival */
