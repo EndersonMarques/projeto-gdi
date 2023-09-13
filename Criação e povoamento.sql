@@ -364,10 +364,25 @@ INSERT INTO SHOW (COD, NOME, LOCAL_)
 VALUES ('S004', 'Show de Blues','Auditório Municipal');
 
 INSERT INTO SHOW (COD, NOME, LOCAL_)
-VALUES ('S005', 'Show de Hip-Hop', 'Arena de Eventos');
+VALUES ('S005', 'Show de Jazz', 'Arena de Eventos');
 
 INSERT INTO SHOW (COD, NOME, LOCAL_)
 VALUES ('S006', 'Show de Eletrônica', 'Clube Noturno');
+
+INSERT INTO SHOW (COD, NOME, LOCAL_)
+VALUES ('S007', 'Show de Eletrônica', 'Clube Noturno');
+
+INSERT INTO SHOW (COD, NOME, LOCAL_)
+VALUES ('S008', 'Show de Pop', 'Arena de Eventos');
+
+INSERT INTO SHOW (COD, NOME, LOCAL_)
+VALUES ('S009', 'Show de Hip-Hop', 'Arena de Eventos');
+
+INSERT INTO SHOW (COD, NOME, LOCAL_)
+VALUES ('S010', 'Show de Blues', 'Auditório Municipal');
+
+INSERT INTO SHOW (COD, NOME, LOCAL_)
+VALUES ('S011', 'Show de Pop', 'Praça Central');
 
 CREATE OR REPLACE TRIGGER TRG_ADICIONAR_ID_FESTIVAL3
 BEFORE INSERT ON GINCANA
