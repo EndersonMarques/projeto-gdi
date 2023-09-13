@@ -9,7 +9,7 @@
 /* Junção interna:
 	Projetar o nome de todos os shows e o nome de seu respectivo festival */
 
-		SELECT S.NOME, F.NOME
+		SELECT S.NOME, F.NOME AS FESTIVAL
 		FROM SHOW S INNER JOIN
 			FESTIVAL F ON S.ID_FESTIVAL = F.ID;
 
