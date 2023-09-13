@@ -56,14 +56,14 @@
 			);
 
 /* Subconsulta do tipo linha:
-	Projetar os shows com o mesmo horário e local do show de código X */
+	Projetar os shows com o mesmo dia e local do show de código S009 */
 
 		SELECT S.NOME
 		FROM SHOW S
-		WHERE (DATA_HORA, LOCAL_) IN (
-			SELECT S1.DATA_HORA, S1.LOCAL_
+		WHERE (TO_CHAR(S.DATA_HORA, 'DD-MM-YYYY'), S.LOCAL_) IN (
+			SELECT TO_CHAR(S1.DATA_HORA, 'DD-MM-YYYY'), S1.LOCAL_
 			FROM SHOW S1
-			WHERE S1.COD = 'X'
+			WHERE S1.COD = 'S009'
 			);
 
 /* Subconsulta do tipo tabela:
